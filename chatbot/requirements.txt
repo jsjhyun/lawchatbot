@@ -1,0 +1,11 @@
+langchain
+openai
+pysqlite3-binary
+chromadb
+unstructured
+sentence-transformers
+faiss-cpu
+tiktoken
+pypdf
+loguru
+docx2txt
