@@ -20,7 +20,7 @@ def main():
         st.chat_message(msg["role"]).write(msg["content"])
 
     # Chat Logic
-    if prompt := st.chat_input("질문을 입력해주세요."):
+    if prompt := st.chat_input("고민 있는 법률 문제를 입력해주세요!"):
         if not openai_api_key:
             st.info("Please add your OpenAI API key to continue.")
             st.stop()
