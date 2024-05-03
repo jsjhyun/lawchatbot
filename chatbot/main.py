@@ -1,7 +1,6 @@
 import streamlit as st
 import tiktoken
 from loguru import logger
-
 from langchain_openai import ChatOpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from openai import OpenAI
@@ -14,13 +13,40 @@ from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_community.chat_message_histories.streamlit import StreamlitChatMessageHistory
 # from chatbot.main import get_conversation_chain, get_text, get_text_chunks, get_vectorstore
 from langchain_community.vectorstores import FAISS
+from langchain_core.messages import ChatMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from dotenv import load_dotenv
+load_dotenv()
+import sys
+import io
+import tiktoken
 
+
+from langchain.chains import ConversationalRetrievalChain
+from langchain.chat_models import ChatOpenAI
+
+from langchain.document_loaders import PyPDFLoader
+from langchain.document_loaders import Docx2txtLoader
+from langchain.document_loaders import UnstructuredPowerPointLoader
+
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import HuggingFaceEmbeddings
+
+from langchain.memory import ConversationBufferMemory
+from langchain.vectorstores import FAISS
+
+# from streamlit_chat import message
+from langchain.callbacks import get_openai_callback
+from langchain.memory import StreamlitChatMessageHistory
+
+from streamlit import write
 def main():
     st.set_page_config(
-    page_title="chatbot",
+    page_title="법률 상담 챗봇",
     page_icon=":books:")
 
-    st.title("💬 법률 상담 챗봇gggg")
+
+    st.title("💬 법률 상담 챗봇")
     st.caption("쉽고, 편리한 법률 상담")
 
     if "conversation" not in st.session_state:
@@ -31,7 +57,7 @@ def main():
 
     if "processComplete" not in st.session_state:
         st.session_state.processComplete = None
-
+    #sidebar에 OpenAI API key를 입력받는 코드
     with st.sidebar:
         uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
@@ -65,25 +91,35 @@ def main():
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = [{"role": "assistant", "content": "안녕하세요! 법률 고민이 있으면 언제든 물어봐주세요!"}]
+    # 이전 대화 기록을 출력해주는 코드
+    if "messages" in st.session_state and len(st.session_state.messages) > 0:
+        for role, message in st.session_state["messages"]:
+            st.chat_message(role).write(message)
 
-    for msg in st.session_state.messages:
+    for msg in st.session_state["messages"]:
         st.chat_message(msg["role"]).write(msg["content"])
+
 
     history = StreamlitChatMessageHistory(key="chat_messages")
 
-    # Chat Logic
-    if prompt := st.chat_input("고민 있는 법률 문제를 입력해주세요!"):
+
+# Chat Logic
+    if user_input := st.chat_input("고민 있는 법률 문제를 입력해주세요!"):
+        st.chat_message("user").write(user_input)
+
         if not openai_api_key:
             st.info("OpenAI API key를 입력해주세요.")
             st.stop()
-
+# OpenAI API 호출
         client = OpenAI(api_key=openai_api_key)
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages.append({"role": "user", "content": user_input})
 
-        st.chat_message("user").write(prompt)
-        response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
+       #AI 응답을 받아오는 코드
+        response = client.chat.completions.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message.content
-        
+        with st.chat_message("assistant"):
+            write("상담 내용: " + user_input)
+        #AI 응답을 출력해주는 코드
         st.session_state.messages.append({"role": "assistant", "content": msg})
         st.chat_message("assistant").write(msg)
 
