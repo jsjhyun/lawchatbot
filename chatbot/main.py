@@ -72,7 +72,7 @@ def main():
     history = StreamlitChatMessageHistory(key="chat_messages")
 
     # Chat Logic
-    if prompt := st.chat_input("질문을 입력해주세요."):
+    if prompt := st.chat_input("고민 있는 법률 문제를 입력해주세요!"):
         if not openai_api_key:
             st.info("OpenAI API key를 입력해주세요.")
             st.stop()
