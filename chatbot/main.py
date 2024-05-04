@@ -1,12 +1,26 @@
+import streamlit as st
+import tiktoken
+from loguru import logger
+from langchain_openai import ChatOpenAI
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from openai import OpenAI
+from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
+from langchain.memory.buffer import ConversationBufferMemory
+from langchain_community.document_loaders.pdf import PyPDFLoader
+from langchain_community.document_loaders.word_document import Docx2txtLoader
+from langchain_community.document_loaders.powerpoint import UnstructuredPowerPointLoader
+from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.chat_message_histories.streamlit import StreamlitChatMessageHistory
+# from chatbot.main import get_conversation_chain, get_text, get_text_chunks, get_vectorstore
+from langchain_community.vectorstores import FAISS
+from langchain_core.messages import ChatMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from dotenv import load_dotenv
 load_dotenv()
 import sys
 import io
-
-
-import streamlit as st
 import tiktoken
-from loguru import logger
+
 
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chat_models import ChatOpenAI
@@ -25,12 +39,15 @@ from langchain.vectorstores import FAISS
 from langchain.callbacks import get_openai_callback
 from langchain.memory import StreamlitChatMessageHistory
 
+from streamlit import write
 def main():
     st.set_page_config(
     page_title="법률 상담 챗봇",
     page_icon=":books:")
 
-    st.title("법률 상담 챗봇 :red[QA Chat]_ :books:")
+
+    st.title("💬 법률 상담 챗봇")
+    st.caption("쉽고, 편리한 법률 상담")
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -40,14 +57,29 @@ def main():
 
     if "processComplete" not in st.session_state:
         st.session_state.processComplete = None
-
+    #sidebar에 OpenAI API key를 입력받는 코드
     with st.sidebar:
-        uploaded_files =  st.file_uploader("문서를 업로드해 주세요",type=['pdf','docx'],accept_multiple_files=True)
+        uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
+        "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"  
+        st.markdown("---")
+        st.markdown(
+            "## How to use\n"
+            "[OpenAI API key](https://platform.openai.com/account/api-keys)를 기입해주세요.\n"  
+            "1. pdf, docx, txt 파일을 올려 사용할 수 있습니다.\n"
+            "2. 채팅을 이용하여 법률 상담을 진행하세요.\n"
+        ) 
+
+        st.markdown("---")
+        st.markdown("# About")
+        st.markdown(
+            "📖 챗봇을 사용하여 문서에 대해 질문하고 즉각적이고 정확한 답변을 얻을 수 있습니다. "
+        )
+
     if process:
         if not openai_api_key:
-            st.info("Please add your OpenAI API key to continue.")
+            st.info("알맞은 OpenAI API key를 입력해주세요.")
             st.stop()
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
@@ -57,43 +89,39 @@ def main():
 
         st.session_state.processComplete = True
 
-    if 'messages' not in st.session_state:
-        st.session_state['messages'] = [{"role": "assistant", 
-                                        "content": "안녕하세요! 법률 고민이 있으면 언제든 물어봐주세요!"}]
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = [{"role": "assistant", "content": "안녕하세요! 법률 고민이 있으면 언제든 물어봐주세요!"}]
+    # 이전 대화 기록을 출력해주는 코드
+    if "messages" in st.session_state and len(st.session_state.messages) > 0:
+        for role, message in st.session_state["messages"]:
+            st.chat_message(role).write(message)
 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    for msg in st.session_state["messages"]:
+        st.chat_message(msg["role"]).write(msg["content"])
+
 
     history = StreamlitChatMessageHistory(key="chat_messages")
 
-    # Chat logic
-    if query := st.chat_input("질문을 입력해주세요."):
-        st.session_state.messages.append({"role": "user", "content": query})
 
-        with st.chat_message("user"):
-            st.markdown(query)
+# Chat Logic
+    if user_input := st.chat_input("고민 있는 법률 문제를 입력해주세요!"):
+        st.chat_message("user").write(user_input)
 
+        if not openai_api_key:
+            st.info("OpenAI API key를 입력해주세요.")
+            st.stop()
+# OpenAI API 호출
+        client = OpenAI(api_key=openai_api_key)
+        st.session_state.messages.append({"role": "user", "content": user_input})
+
+       #AI 응답을 받아오는 코드
+        response = client.chat.completions.create(model="gpt-4", messages=st.session_state.messages)
+        msg = response.choices[0].message.content
         with st.chat_message("assistant"):
-            chain = st.session_state.conversation
-
-            with st.spinner("Thinking..."):
-                result = chain({"question": query})
-                with get_openai_callback() as cb:
-                    st.session_state.chat_history = result['chat_history']
-                response = result['answer']
-                source_documents = result['source_documents']
-
-                st.markdown(response)
-                with st.expander("참고 문서 확인"):
-                    st.markdown(source_documents[0].metadata['source'], help = source_documents[0].page_content)
-                    st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
-                    st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
-                    
-
-
-# Add assistant message to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            write("상담 내용: " + user_input)
+        #AI 응답을 출력해주는 코드
+        st.session_state.messages.append({"role": "assistant", "content": msg})
+        st.chat_message("assistant").write(msg)
 
 def tiktoken_len(text):
     tokenizer = tiktoken.get_encoding("cl100k_base")
@@ -122,7 +150,6 @@ def get_text(docs):
         doc_list.extend(documents)
     return doc_list
 
-
 def get_text_chunks(text):
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=900,
@@ -131,7 +158,6 @@ def get_text_chunks(text):
     )
     chunks = text_splitter.split_documents(text)
     return chunks
-
 
 def get_vectorstore(text_chunks):
     embeddings = HuggingFaceEmbeddings(
@@ -155,8 +181,6 @@ def get_conversation_chain(vetorestore,openai_api_key):
         )
 
     return conversation_chain
-
-
 
 if __name__ == '__main__':
     main()
