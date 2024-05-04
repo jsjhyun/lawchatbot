@@ -18,8 +18,8 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from dotenv import load_dotenv
 load_dotenv()
 # from langchain.callbacks import get_openai_callback
-
 from streamlit import write
+
 def main():
     st.set_page_config(
     page_title="법률 상담 챗봇",
