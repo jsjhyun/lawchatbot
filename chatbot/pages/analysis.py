@@ -23,7 +23,6 @@ def main():
     page_icon=":books:")
 
     st.title("💬 법률 문서 분석")
-    st.markdown(f"""# {st.title} <span style=color:#2E9BF5><font size=5>GPT</font></span>""",unsafe_allow_html=True)
     st.caption("쉽고, 편리한 문서 요약")
 
     if "conversation" not in st.session_state:
