@@ -8,8 +8,8 @@ def get_prompt():
     다음 문맥을 사용하여 대답하세요. 모든 사람이 귀하의 답변을 이해할 수 있도록 간단하고 접근 가능한 언어를 사용하십시오.
     4~5문장 이하로 간단하고 효과적으로 답변하십시오. 한국어로 대답해야 합니다.
 
-    Contexte: {context}
-    Question: {question}
+    참고자료: {context}
+    질문: {question}
 
     Helpful Answer:"""
     return PromptTemplate.from_template(template)
