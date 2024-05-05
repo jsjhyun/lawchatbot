@@ -19,9 +19,10 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain_core.runnables import RunnablePassthrough
 from prompt import get_prompt
+
 def main():
     st.set_page_config(
-    page_title="법률 상담 챗봇",
+    page_title="law chat",
     page_icon=":books:")
 
     st.title("💬 법률 상담 챗봇")
@@ -33,7 +34,7 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    with st.sidebar:      
+    with st.sidebar:  
         uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
@@ -41,14 +42,13 @@ def main():
         st.markdown("---")
         st.markdown(
             "## How to use\n"
-            "[OpenAI API key](https://platform.openai.com/account/api-keys)를 기입해주세요.\n"  
-            "1. pdf, docx, txt 파일을 올려 사용할 수 있습니다.\n"
+            "1. OpenAI API key를 기입해주세요.\n"  
             "2. 채팅을 이용하여 법률 상담을 진행하세요.\n"
         ) 
         st.markdown("---")
         st.markdown("# About")
         st.markdown(
-            "📖 챗봇을 사용하여 문서에 대해 질문하고 즉각적이고 정확한 답변을 얻을 수 있습니다. "
+            "📖 챗봇을 통해 즉각적이고 정확한 답변을 얻을 수 있습니다."
         )
 
         # if "processComplete" not in st.session_state:
@@ -56,7 +56,7 @@ def main():
             
     if process:
         if not openai_api_key:
-            st.info("Please add your OpenAI API key to continue.")
+            st.info("OpenAI API key를 넣어주세요.")
             st.stop()
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
@@ -99,7 +99,7 @@ def main():
 
             with st.spinner("Thinking..."):
                 result = chain.invoke(user_input)
-                #with get_openai_callback() as cb:
+                # with get_openai_callback() as cb:
                     #st.session_state.chat_history = result['chat_history']
                 #response = result['answer']
 

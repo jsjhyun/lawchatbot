@@ -14,22 +14,16 @@ from langchain_community.chat_message_histories.streamlit import StreamlitChatMe
 # from chatbot.main import get_conversation_chain, get_text, get_text_chunks, get_vectorstore
 from langchain_community.vectorstores import FAISS
 from langchain_community.callbacks.manager import get_openai_callback
-from langchain_core.messages import InvalidToolCall
-from streamlit_option_menu import option_menu
-import streamlit.components.v1 as html
-from  PIL import Image
-import numpy as np
-import pandas as pd
-import plotly.express as px
-import io
+from langchain_core.runnables import RunnablePassthrough
+from prompt import get_prompt_pdf
 
 def main():
     st.set_page_config(
-    page_title="법률 상담 챗봇",
+    page_title="law chat",
     page_icon=":books:")
 
-    st.title("💬 법률 상담 챗봇")
-    st.caption("쉽고, 편리한 법률 상담")
+    st.title("💬 법률 문서 분석 GPT")
+    st.caption("쉽고, 편리한 문서 요약")
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -46,13 +40,13 @@ def main():
         st.markdown(
             "## How to use\n"
             "1. OpenAI API key를 기입해주세요.\n"  
-            "2. pdf, docx, txt 파일을 올려 문서를 분석하도록 합니다.\n"
+            "2. pdf, docx, txt 파일을 올려 법률 문서를 분석하도록 합니다.\n"
             "3. 채팅을 이용하여 법률 문서에 관한 상담을 진행하세요.\n"
         ) 
         st.markdown("---")
         st.markdown("## About")
         st.markdown(
-            "📖 챗봇을 사용하여 문서에 대해\n 질문하면 즉각적이고 정확한 답변을 얻을 수 있습니다. "
+            "📖 챗봇을 통해 즉각적이고 정확한 답변을 얻을 수 있습니다. "
         )
 
         st.markdown("""
@@ -65,16 +59,20 @@ def main():
             
     if process:
         if not openai_api_key:
-            st.info("Please add your OpenAI API key to continue.")
+            st.info("OpenAI API key를 넣어주세요.")
             st.stop()
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
         vetorestore = get_vectorstore(text_chunks)
+
+        if not uploaded_files:
+            st.warning('파일을 넣어주세요')
+            st.stop()
         
         st.session_state.conversation = get_conversation_chain(vetorestore,openai_api_key) 
 
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "assistant", "content": "안녕하세요! 법률 고민이 있으면 언제든 물어봐주세요!"}]
+        st.session_state["messages"] = [{"role": "assistant", "content": "안녕하세요! 법률 문서를 요약 & 분석해 드립니다!"}]
 
     for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg["content"])
@@ -83,17 +81,17 @@ def main():
 
     # 채팅 기록 삭제 
     def clear_chat_history():
-        st.session_state.messages = [{"role": "assistant", "content": "안녕하세요! 법률 고민이 있으면 언제든 물어봐주세요!"}]
+        st.session_state.messages = [{"role": "assistant", "content": "안녕하세요! 법률 문서를 요약 & 분석해 드립니다!"}]
     st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
-    if prompt := st.chat_input("질문을 입력해주세요."):
+    if user_input := st.chat_input("질문을 입력해주세요."):
         if not openai_api_key:
             st.info("OpenAI API key 를 입력해주세요.")
             st.stop()
     
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages.append({"role": "user", "content": user_input})
         
-        st.chat_message("user").write(prompt)
+        st.chat_message("user").write(user_input)
         #       response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
         # msg = response.choices[0].message.content
         # st.session_state.messages.append({"role": "assistant", "content": msg})
@@ -102,20 +100,21 @@ def main():
             chain = st.session_state.conversation
 
             with st.spinner("Thinking..."):
-                result = chain({"question": prompt})
-                with get_openai_callback() as cb:
-                    st.session_state.chat_history = result['chat_history']
-                response = result['answer']
-                source_documents = result['source_documents']
+                result = chain.invoke(user_input)
+                # with get_openai_callback() as cb:
+                #     st.session_state.chat_history = result['chat_history']
+                # response = result['answer']
+                # source_documents = result['source_documents']
+                st.markdown(result)
 
-                st.markdown(response)
-                with st.expander("참고 문서 확인"):
-                    st.markdown(source_documents[0].metadata['source'], help = source_documents[0].page_content)
-                    st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
-                    st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
+                # st.markdown(response)
+                # with st.expander("참고 문서 확인"):
+                #     st.markdown(source_documents[0].metadata['source'], help = source_documents[0].page_content)
+                #     st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
+                #     st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
 
 # Add assistant message to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.messages.append({"role": "assistant", "content": result})
 
 def tiktoken_len(text):
     tokenizer = tiktoken.get_encoding("cl100k_base")
@@ -165,16 +164,11 @@ def get_vectorstore(text_chunks):
 
 def get_conversation_chain(vetorestore,openai_api_key):
     llm = ChatOpenAI(openai_api_key=openai_api_key, model_name = 'gpt-4',temperature=0)
-    conversation_chain = ConversationalRetrievalChain.from_llm(
-            llm=llm, 
-            chain_type="stuff", 
-            retriever=vetorestore.as_retriever(search_type = 'mmr', vervose = True), 
-            memory=ConversationBufferMemory(memory_key='chat_history', return_messages=True, output_key='answer'),
-            get_chat_history=lambda h: h,
-            return_source_documents=True,
-            verbose = True
+    conversation_chain = (
+        {"context": vetorestore.as_retriever() , "question": RunnablePassthrough()}
+        | get_prompt_pdf()
+        | llm
         )
-
     return conversation_chain
 
 if __name__ == '__main__':
