@@ -34,10 +34,10 @@ def get_vectorstore(text_chunks):
     vectordb = FAISS.from_documents(text_chunks, embeddings)
     return vectordb
 
-def get_conversation_chain(vetorestore,openai_api_key):
+def get_conversation_chain(retriever,openai_api_key):
     llm = ChatOpenAI(openai_api_key=openai_api_key, model_name = 'gpt-4',temperature=0)
     conversation_chain = (
-        {"context": vetorestore.as_retriever() , "question": RunnablePassthrough()}
+        {"context": retriever , "question": RunnablePassthrough()}
         | get_prompt()
         | llm
         )

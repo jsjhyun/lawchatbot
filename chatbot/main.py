@@ -60,11 +60,15 @@ def main():
         if not openai_api_key:
             st.info("Please add your OpenAI API key to continue.")
             st.stop()
-        files_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/criminal_law.pdf")
-        text_chunks = get_text_chunks(files_text)
-        vetorestore = get_vectorstore(text_chunks)
+        criminal_law_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/criminal_law.pdf")
+        civil_law_text= get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/civil_law.pdf")
+        constitution_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/constitution.pdf")
         
-        st.session_state.conversation = get_conversation_chain(vetorestore,openai_api_key) 
+        criminal_retriever = get_vectorstore(get_text_chunks(criminal_law_text))
+        civil_retriever = get_vectorstore(get_text_chunks(civil_law_text))
+        constitution_retriever = get_vectorstore(get_text_chunks(constitution_text))
+
+        st.session_state.conversation = get_conversation_chain(criminal_retriever,openai_api_key) 
 #            st.session_state.processComplete = True 
 
     if "messages" not in st.session_state:
