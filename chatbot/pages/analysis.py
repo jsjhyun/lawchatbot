@@ -42,6 +42,7 @@ def main():
             "1. OpenAI API key를 기입해주세요.\n"  
             "2. pdf, docx, txt 파일을 올려 법률 문서를 분석하도록 합니다.\n"
             "3. 채팅을 이용하여 법률 문서에 관한 상담을 진행하세요.\n"
+            "* Open Api Key, file 모두 넣어야 진행이 가능합니다."
         ) 
         st.markdown("---")
         st.markdown("## About")
@@ -56,18 +57,20 @@ def main():
             }
         </style>
         """, unsafe_allow_html=True)
-            
+
     if process:
+        if not uploaded_files:
+            st.warning('파일을 올려주세요.')
+            if not openai_api_key:
+                st.warning("OpenAI API key를 넣어주세요.")
+            st.stop()
+
         if not openai_api_key:
-            st.info("OpenAI API key를 넣어주세요.")
+            st.warning("OpenAI API key를 넣어주세요.")
             st.stop()
         files_text = get_text(uploaded_files)
         text_chunks = get_text_chunks(files_text)
         vetorestore = get_vectorstore(text_chunks)
-
-        if not uploaded_files:
-            st.warning('파일을 넣어주세요')
-            st.stop()
         
         st.session_state.conversation = get_conversation_chain(vetorestore,openai_api_key) 
 
@@ -147,7 +150,7 @@ def get_text(docs):
 
 def get_text_chunks(text):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=900,
+        chunk_size=1000,
         chunk_overlap=100,
         length_function=tiktoken_len
     )
