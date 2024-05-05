@@ -82,7 +82,7 @@ def main():
             st.stop()
     
 #       client = OpenAI(api_key=openai_api_key)
-        
+        # 내 채팅 기록 남기기
         st.session_state.messages.append({"role": "user", "content": user_input})
         
         st.chat_message("user").write(user_input)
@@ -101,8 +101,8 @@ def main():
                 # with get_openai_callback() as cb:
                     #st.session_state.chat_history = result['chat_history']
                 #response = result['answer']                
-# Add assistant message to chat history
-        st.session_state.messages.append({"role": "assistant", "content": result})
+        # AI 채팅 기록 남기기
+        st.session_state.messages.append({"role": "assistant", "content": result.content})
 
 def tiktoken_len(text):
     tokenizer = tiktoken.get_encoding("cl100k_base")

@@ -88,9 +88,8 @@ def main():
         if not openai_api_key:
             st.info("OpenAI API key 를 입력해주세요.")
             st.stop()
-    
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        
+        # 내 채팅 기록 남기기
+        st.session_state.messages.append({"role": "user", "content": user_input})      
         st.chat_message("user").write(user_input)
         #       response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
         # msg = response.choices[0].message.content
@@ -115,8 +114,8 @@ def main():
                 #     st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
                 #     st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
 
-# Add assistant message to chat history
-        st.session_state.messages.append({"role": "assistant", "content": result})
+        # AI 채팅 기록 남기기
+        st.session_state.messages.append({"role": "assistant", "content": result.content})
 
 
 def tiktoken_len(text):
