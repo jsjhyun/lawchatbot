@@ -16,9 +16,11 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain_core.runnables import RunnablePassthrough
 from prompt import get_prompt
+<<<<<<<<< Temporary merge branch 1
 from retriever import *
 from multiple_retriever import *
-
+=========
+>>>>>>>>> Temporary merge branch 2
 
 def main():
     st.set_page_config(
@@ -37,7 +39,10 @@ def main():
 
     with st.sidebar:      
         #uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
-
+=========
+    with st.sidebar:  
+        uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
+>>>>>>>>> Temporary merge branch 2
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
         "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)" 
@@ -86,7 +91,9 @@ def main():
         category=get_retriever_category(user_input,openai_api_key)
         st.session_state.conversation = get_conversation_chain(Retriever.retrievers[category],openai_api_key) 
         
-
+=========
+        # 내 채팅 기록 남기기
+>>>>>>>>> Temporary merge branch 2
         st.session_state.messages.append({"role": "user", "content": user_input})
         
         st.chat_message("user").write(user_input)
@@ -102,7 +109,12 @@ def main():
 
                 result = chain.invoke(user_input).content
                 #with get_openai_callback() as cb:
-
+=========
+                result = chain.invoke(user_input)
+                response_content = result.content
+                st.write(response_content)
+                # with get_openai_callback() as cb:
+>>>>>>>>> Temporary merge branch 2
                     #st.session_state.chat_history = result['chat_history']
                 #response = result['answer']                
         # AI 채팅 기록 남기기
