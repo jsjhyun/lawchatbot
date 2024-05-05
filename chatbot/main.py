@@ -20,6 +20,7 @@ from langchain_community.callbacks.manager import get_openai_callback
 from langchain_core.runnables import RunnablePassthrough
 from prompt import get_prompt
 from retriever import *
+from multiple_retriever import *
 
 def main():
     st.set_page_config(
@@ -60,15 +61,7 @@ def main():
         if not openai_api_key:
             st.info("Please add your OpenAI API key to continue.")
             st.stop()
-        criminal_law_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/criminal_law.pdf")
-        civil_law_text= get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/civil_law.pdf")
-        constitution_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/constitution.pdf")
-        
-        criminal_retriever = get_vectorstore(get_text_chunks(criminal_law_text))
-        civil_retriever = get_vectorstore(get_text_chunks(civil_law_text))
-        constitution_retriever = get_vectorstore(get_text_chunks(constitution_text))
-
-        st.session_state.conversation = get_conversation_chain(criminal_retriever,openai_api_key) 
+        #Retriever()
 #            st.session_state.processComplete = True 
 
     if "messages" not in st.session_state:
@@ -90,6 +83,8 @@ def main():
             st.stop()
     
 #       client = OpenAI(api_key=openai_api_key)
+        category=get_retriever_category(user_input,openai_api_key)
+        st.session_state.conversation = get_conversation_chain(Retriever.retrievers[category],openai_api_key) 
         
         st.session_state.messages.append({"role": "user", "content": user_input})
         
