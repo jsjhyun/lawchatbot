@@ -1,12 +1,9 @@
-import chromadb
-from openai import OpenAI
 import streamlit as st
 import tiktoken
 from loguru import logger
 # from retriever import rag_func
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain.memory.buffer import ConversationBufferMemory
 from langchain_community.document_loaders.pdf import PyPDFLoader
@@ -19,12 +16,15 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain_core.runnables import RunnablePassthrough
 from prompt import get_prompt
+
 from retriever import *
 from multiple_retriever import *
 
+
+
 def main():
     st.set_page_config(
-    page_title="법률 상담 챗봇",
+    page_title="law chat",
     page_icon=":books:")
 
     st.title("💬 법률 상담 챗봇")
@@ -36,22 +36,25 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
+
     with st.sidebar:      
         #uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
+
+   
+
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
         "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)" 
         st.markdown("---")
         st.markdown(
             "## How to use\n"
-            "[OpenAI API key](https://platform.openai.com/account/api-keys)를 기입해주세요.\n"  
-            "1. pdf, docx, txt 파일을 올려 사용할 수 있습니다.\n"
+            "1. OpenAI API key를 기입해주세요.\n"  
             "2. 채팅을 이용하여 법률 상담을 진행하세요.\n"
         ) 
         st.markdown("---")
-        st.markdown("# About")
+        st.markdown("## About")
         st.markdown(
-            "📖 챗봇을 사용하여 문서에 대해 질문하고 즉각적이고 정확한 답변을 얻을 수 있습니다. "
+            "📖 챗봇을 통해 즉각적이고 정확한 답변을 얻을 수 있습니다."
         )
 
         # if "processComplete" not in st.session_state:
@@ -59,7 +62,7 @@ def main():
             
     if process:
         if not openai_api_key:
-            st.info("Please add your OpenAI API key to continue.")
+            st.info("OpenAI API key를 넣어주세요.")
             st.stop()
         #Retriever()
 #            st.session_state.processComplete = True 
@@ -83,9 +86,10 @@ def main():
             st.stop()
     
 #       client = OpenAI(api_key=openai_api_key)
+
         category=get_retriever_category(user_input,openai_api_key)
         st.session_state.conversation = get_conversation_chain(Retriever.retrievers[category],openai_api_key) 
-        
+       
         st.session_state.messages.append({"role": "user", "content": user_input})
         
         st.chat_message("user").write(user_input)
@@ -98,15 +102,14 @@ def main():
             chain = st.session_state.conversation
 
             with st.spinner("Thinking..."):
+
                 result = chain.invoke(user_input).content
                 #with get_openai_callback() as cb:
+               
                     #st.session_state.chat_history = result['chat_history']
-                #response = result['answer']
-
-                st.markdown(result)
-                
-# Add assistant message to chat history
-        st.session_state.messages.append({"role": "assistant", "content": result})
+                #response = result['answer']                
+        # AI 채팅 기록 남기기
+        st.session_state.messages.append({"role": "assistant", "content": result.content})
 
 
 
