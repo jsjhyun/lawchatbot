@@ -101,11 +101,13 @@ def main():
 
             with st.spinner("Thinking..."):
                 result = chain.invoke(user_input)
+                response_content = result.content
+                st.write(response_content)
                 # with get_openai_callback() as cb:
                 #     st.session_state.chat_history = result['chat_history']
                 # response = result['answer']
                 # source_documents = result['source_documents']
-                st.markdown(result)
+              #  st.markdown(result)
 
                 # st.markdown(response)
                 # with st.expander("참고 문서 확인"):
@@ -115,6 +117,7 @@ def main():
 
 # Add assistant message to chat history
         st.session_state.messages.append({"role": "assistant", "content": result})
+
 
 def tiktoken_len(text):
     tokenizer = tiktoken.get_encoding("cl100k_base")

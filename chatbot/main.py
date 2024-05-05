@@ -1,12 +1,9 @@
-import chromadb
-from openai import OpenAI
 import streamlit as st
 import tiktoken
 from loguru import logger
 # from retriever import rag_func
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain.memory.buffer import ConversationBufferMemory
 from langchain_community.document_loaders.pdf import PyPDFLoader
@@ -46,7 +43,7 @@ def main():
             "2. 채팅을 이용하여 법률 상담을 진행하세요.\n"
         ) 
         st.markdown("---")
-        st.markdown("# About")
+        st.markdown("## About")
         st.markdown(
             "📖 챗봇을 통해 즉각적이고 정확한 답변을 얻을 수 있습니다."
         )
@@ -99,12 +96,11 @@ def main():
 
             with st.spinner("Thinking..."):
                 result = chain.invoke(user_input)
+                response_content = result.content
+                st.write(response_content)
                 # with get_openai_callback() as cb:
                     #st.session_state.chat_history = result['chat_history']
-                #response = result['answer']
-
-                st.markdown(result)
-                
+                #response = result['answer']                
 # Add assistant message to chat history
         st.session_state.messages.append({"role": "assistant", "content": result})
 
