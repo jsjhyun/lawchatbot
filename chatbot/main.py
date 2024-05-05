@@ -1,24 +1,7 @@
 import streamlit as st
-import tiktoken
-from loguru import logger
-# from retriever import rag_func
-from langchain_openai import ChatOpenAI
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-from langchain.memory.buffer import ConversationBufferMemory
-from langchain_community.document_loaders.pdf import PyPDFLoader
-from langchain_community.document_loaders.word_document import Docx2txtLoader
-from langchain_community.document_loaders.powerpoint import UnstructuredPowerPointLoader
-from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_community.chat_message_histories.streamlit import StreamlitChatMessageHistory
-# from chatbot.main import get_conversation_chain, get_text, get_text_chunks, get_vectorstore
-from langchain_community.vectorstores import FAISS
-from langchain_community.callbacks.manager import get_openai_callback
-from langchain_core.runnables import RunnablePassthrough
-from prompt import get_prompt
 from retriever import *
 from multiple_retriever import *
-
 
 def main():
     st.set_page_config(
