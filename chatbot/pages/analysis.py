@@ -22,7 +22,8 @@ def main():
     page_title="law chat",
     page_icon=":books:")
 
-    st.title("💬 법률 문서 분석 GPT")
+    st.title("💬 법률 문서 분석")
+    st.markdown(f"""# {st.title} <span style=color:#2E9BF5><font size=5>GPT</font></span>""",unsafe_allow_html=True)
     st.caption("쉽고, 편리한 문서 요약")
 
     if "conversation" not in st.session_state:
@@ -119,7 +120,6 @@ def main():
 
         # AI 채팅 기록 남기기
         st.session_state.messages.append({"role": "assistant", "content": result.content})
-
 
 def tiktoken_len(text):
     tokenizer = tiktoken.get_encoding("cl100k_base")
