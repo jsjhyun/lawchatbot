@@ -30,7 +30,7 @@
 <br>
 
 
-### Tech Stack
+## Tech Stack
 
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/><img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
 <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
@@ -38,7 +38,7 @@
 
 <br>
 
-### 주요기능 
+## 주요기능 
 
 <br>
 
@@ -46,5 +46,5 @@
 
 <br>
 
-### Contact
+## Contact
 질문이나 피드백이 있으시면 [github issue](https://github.com/KwangWoonUnivCapstone/lawchatbot/issues)를 올려주세요.
