@@ -61,10 +61,20 @@ OpenAI API Key를 가지고 있지 않다면 링크를 통해 Key를 발급받�
 <br>
 
 ## Tech Stack
+<div align="center">
 
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/><img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
-<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
-<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"/><img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"/>
+  <img src="https://img.shields.io/badge/html5-E34F26?style=flat&logo=html5&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/css-1572B6?style=flat&logo=css3&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white"/>
+  
+  <img src="https://img.shields.io/badge/python-3776AB?style=flat&logo=python&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/linux-FCC624?style=flat&logo=linux&logoColor=black"/>&nbsp;<img src="https://img.shields.io/badge/VScode-007ACC?style=flat&logo=VScode&logoColor=white"/>
+  
+  <img src="https://img.shields.io/badge/git-F05032?style=flat&logo=git&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/github-181717?style=flat&logo=github&logoColor=white"/>&nbsp;![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white)&nbsp;<img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white"/>
+  
+  <img src="https://img.shields.io/badge/google colab-F9AB00?style=flat&logo=google colab&logoColor=white"/>&nbsp;[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97-Models%20on%20Hub-yellow)](https://huggingface.co/models?filter=keytotext)&nbsp;![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=flat&logo=openai&logoColor=white)
+
+  <img src='https://miro.medium.com/v2/resize:fit:1358/1*ou-fsKxxJm1zDv2_HQ1x6g.png' height=300 width=500></img>
+  
+</div>
+
 
 <br>
 
