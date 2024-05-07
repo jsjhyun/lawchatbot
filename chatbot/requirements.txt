@@ -8,5 +8,6 @@ tiktoken
 pypdf
 loguru
 docx2txt
-langchain_openai
+langchain-openai
 langchain-community
+langchain-core
