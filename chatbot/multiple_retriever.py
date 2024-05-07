@@ -4,6 +4,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from retriever import *
+
 class Search(BaseModel):
     """Search for information about 법."""
 
@@ -31,9 +32,12 @@ def get_retriever_category(question, openai_api_key):
 
 
 class Retriever():
-    criminal_law_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/criminal_law.pdf")
-    civil_law_text= get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/civil_law.pdf")
-    constitution_text = get_pdf("/Users/eungwanhwi/Desktop/lawchatbotproject/venv/lawchatbot/chatbot/constitution.pdf")
+    criminal_pdf_url = "https://raw.githubusercontent.com/KwangWoonUnivCapstone/lawchatbot/main/chatbot/data/criminal_law.pdf"
+    civil_law_pdf_url="https://raw.githubusercontent.com/KwangWoonUnivCapstone/lawchatbot/main/chatbot/data/civil_law.pdf"
+    constitutionl_pdf_url="https://raw.githubusercontent.com/KwangWoonUnivCapstone/lawchatbot/main/chatbot/data/constitution.pdf"
+    criminal_law_text = get_pdf(criminal_pdf_url)
+    civil_law_text= get_pdf(civil_law_pdf_url)
+    constitution_text = get_pdf(constitutionl_pdf_url)
     
     criminal_retriever = get_vectorstore(get_text_chunks(criminal_law_text)).as_retriever()
     civil_retriever = get_vectorstore(get_text_chunks(civil_law_text)).as_retriever()
