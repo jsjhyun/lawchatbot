@@ -1,4 +1,4 @@
 venv/
 data/
 myvenv/
-.pdf
+*.pdf
