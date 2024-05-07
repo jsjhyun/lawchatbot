@@ -2,7 +2,7 @@
 <h3 align="center">Know Your Rights! Better Citizen, Better Nation!</h1>
 
 <p align="center">
-<img src="" width="700"/>
+<img src="https://github.com/KwangWoonUnivCapstone/lawchatbot/assets/105183327/f9f05752-32c5-4833-aacb-ed58276993a5" width="700"/>
 </p>
 
 ## About The Project
@@ -10,7 +10,15 @@
 LawChatBot은 판례 및 법률 조항과 함께 법률 상담 서비스와 법률 문서 분석 및 요약 기능을 제공합니다. 
 LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용한 법률 지식을 더해 다양하고 특수한 상황에 유연하게 대응하여 답변을 생성할 수 있습니다. 
 
-+ 시연영상 
++ 시연영상 추가 예정
+
+<br>
+
+## ⌘ Project Background
+
+- **배경** : 국내 법률 시장 규모의 증가 및 향후 고령화, 산업화로 인해 상속, 노후 보장, 의료 등에 법률 자문 서비스 수요 증가가 예상되고 있습니다. 그러나 법률 용어나 법률 문장은 해석하기 어려워 일반인들이 이해하기에는 쉽지 않습니다.
+  
+- **목표** : 이러한 상황을 해결하기 위해 법률 상황에 대해 이해하기 쉬운 가이드라인을 제시하고, 일반인들이 처한 법적 상황을 분석하여 이해하기 쉽게 상담을 제공함으로써 법의 장벽을 낮출 수 있는 가벼운 법률 상담 서비스를 제공하고자 합니다.
 
 <br>
 
@@ -25,7 +33,7 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 
 - 법률 상담 서비스
 
-- 완성 사진
+- 완성 사진 추가 예정
   - 법률 상담 서비스의 경우에는 Main 페이지를 선택합니다.   
   - 자신이 가지고 있는 OpenAI API Key를 입력합니다.
   - Process 버튼을 눌러 AI ChatBot이 사용자가 올린 법률 문서를 이해하도록 합니다.
@@ -36,7 +44,7 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 
 - 법률 문서 요약 서비스
 
-- 완성 사진
+- 완성 사진 추가 예정정
   - 법률 문서 요약 서비스의 경우에는 Analysis 페이지를 선택합니다.
   - 자신이 가지고 있는 OpenAI API Key를 입력합니다.
   - PDF, txt, DOCX 형태의 법률 문서 파일을 넣습니다.
@@ -88,10 +96,7 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
   
 </div>
 
-<br>
-
-## Feature List
-
+## RAG 개발 단계
 
 <br>
 
