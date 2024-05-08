@@ -24,7 +24,7 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 
 ## Use Case
 
-### Getting Started <a href=""><img src="https://static.vecteezy.com/system/resources/previews/009/384/880/non_2x/click-here-button-clipart-design-illustration-free-png.png" width="120" height="auto"></a>
+### Getting Started <a href="https://kwangwoonunivcapstone-lawchatbot-chatbotmain-y1gxsi.streamlit.app/"><img src="https://static.vecteezy.com/system/resources/previews/009/384/880/non_2x/click-here-button-clipart-design-illustration-free-png.png" width="120" height="auto"></a>
 
 1. 웹 서버에 접속합니다.
 2. 법률 상담 서비스와 법률 문서 요약 서비스 중 자신이 원하는 서비스를 선택합니다.
