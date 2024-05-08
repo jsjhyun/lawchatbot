@@ -84,7 +84,8 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 ## Tech Stack
 <div align="center">
 
-  <img src="https://img.shields.io/badge/html5-E34F26?style=flat&logo=html5&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/css-1572B6?style=flat&logo=css3&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white"/>
+ // <img src="https://img.shields.io/badge/html5-E34F26?style=flat&logo=html5&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/css-1572B6?style=flat&logo=css3&logoColor=white"/>&nbsp;
+  <img src="https://img.shields.io/badge/streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white"/>
   
   <img src="https://img.shields.io/badge/python-3776AB?style=flat&logo=python&logoColor=white"/>&nbsp;<img src="https://img.shields.io/badge/linux-FCC624?style=flat&logo=linux&logoColor=black"/>&nbsp;<img src="https://img.shields.io/badge/VScode-007ACC?style=flat&logo=VScode&logoColor=white"/>
   
