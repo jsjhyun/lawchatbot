@@ -24,7 +24,7 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 
 ## Use Case
 
-### Getting Started <a href="https://kwangwoonunivcapstone-lawchatbot-chatbotmain-y1gxsi.streamlit.app/"><img src="https://static.vecteezy.com/system/resources/previews/009/384/880/non_2x/click-here-button-clipart-design-illustration-free-png.png" width="120" height="auto"></a>
+### Getting Started <a href="https://kwuniv-lawchatbot.streamlit.app/"><img src="https://static.vecteezy.com/system/resources/previews/009/384/880/non_2x/click-here-button-clipart-design-illustration-free-png.png" width="120" height="auto"></a>
 
 1. 웹 서버에 접속합니다.
 2. 법률 상담 서비스와 법률 문서 요약 서비스 중 자신이 원하는 서비스를 선택합니다.
@@ -33,7 +33,8 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 
 - 법률 상담 서비스
 
-- 완성 사진 추가 예정
+  <img width="1280" alt="image" src="https://github.com/KwangWoonUnivCapstone/lawchatbot/assets/105183327/a095d7f7-2af1-422e-bfb3-2771f9ae8f3a">
+
   - 법률 상담 서비스의 경우에는 Main 페이지를 선택합니다.   
   - 자신이 가지고 있는 OpenAI API Key를 입력합니다.
   - Process 버튼을 눌러 AI ChatBot이 사용자가 올린 법률 문서를 이해하도록 합니다.
@@ -44,7 +45,8 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 
 - 법률 문서 요약 서비스
 
-- 완성 사진 추가 예정정
+<img width="1280" alt="image" src="https://github.com/KwangWoonUnivCapstone/lawchatbot/assets/105183327/6b856ae8-d762-4518-a71d-6ac2e178ab65">
+
   - 법률 문서 요약 서비스의 경우에는 Analysis 페이지를 선택합니다.
   - 자신이 가지고 있는 OpenAI API Key를 입력합니다.
   - PDF, txt, DOCX 형태의 법률 문서 파일을 넣습니다.
@@ -61,7 +63,10 @@ LLM 모델의 이미 학습된 방대한 정보와 더불어 Langchain을 사용
 >
 >서비스를 이용하는 데에 궁금한 점이 생기면 FAQ를 참고하도록 합니다.
 >
->채팅 내용을 지우고 싶다면 사이드 바에 있는 Clear Chat History를 사용하도록 합니다. 
+>채팅 내용을 지우고 싶다면 사이드 바에 있는 Clear Chat History를 사용하도록 합니다.
+
+<img width="1280" alt="image" src="https://github.com/KwangWoonUnivCapstone/lawchatbot/assets/105183327/3a1c5e8f-d619-4ae7-8f81-e39e307611fb">
+
 
 <br>
 
