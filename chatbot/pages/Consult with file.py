@@ -45,18 +45,16 @@ def main():
             "* Open Api Key, file 모두 넣어야 진행이 가능합니다."
         ) 
         st.markdown("---")
+        st.markdown(
+            "## Please Check!\n"
+            "1. [변호사법 109조]\n'변호사가 아닌자'의 유상 법률 상담 및 법률 문서 작성을 금지한다.\n"  
+            "2. 결정에 대한 책임은 사용자에게 있음을 고지한다.\n"
+        ) 
+        st.markdown("---")
         st.markdown("## About")
         st.markdown(
             "📖 챗봇을 통해 즉각적이고 정확한 답변을 얻을 수 있습니다. "
         )
-
-        st.markdown("""
-        <style>
-            [data-testid=stSidebar] {
-                background-color: #180C3D;
-            }
-        </style>
-        """, unsafe_allow_html=True)
 
     if process:
         if not uploaded_files:
