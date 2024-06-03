@@ -42,7 +42,7 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 def get_conversation_chain(retriever,openai_api_key):
-    llm = ChatOpenAI(openai_api_key=openai_api_key, model_name = 'gpt-4',temperature=0)
+    llm = ChatOpenAI(openai_api_key=openai_api_key, model_name = 'gpt-4o',temperature=0)
     conversation_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
         | get_prompt()
