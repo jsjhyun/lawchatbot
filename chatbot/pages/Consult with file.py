@@ -1,7 +1,6 @@
 import streamlit as st
 import tiktoken
 from loguru import logger
-# from retriever import rag_func
 from langchain_openai import ChatOpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
@@ -11,7 +10,6 @@ from langchain_community.document_loaders.word_document import Docx2txtLoader
 from langchain_community.document_loaders.powerpoint import UnstructuredPowerPointLoader
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_community.chat_message_histories.streamlit import StreamlitChatMessageHistory
-# from chatbot.main import get_conversation_chain, get_text, get_text_chunks, get_vectorstore
 from langchain_community.vectorstores import FAISS
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain_core.runnables import RunnablePassthrough
@@ -89,13 +87,9 @@ def main():
         if not openai_api_key:
             st.info("OpenAI API key 를 입력해주세요.")
             st.stop()
-        # 내 채팅 기록 남기기
         st.session_state.messages.append({"role": "user", "content": user_input})      
         st.chat_message("user").write(user_input)
-        #       response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
-        # msg = response.choices[0].message.content
-        # st.session_state.messages.append({"role": "assistant", "content": msg})
-        # st.chat_message("assistant").write(msg)
+        
         with st.chat_message("assistant"):
             chain = st.session_state.conversation
 
@@ -103,17 +97,6 @@ def main():
                 result = chain.invoke(user_input)
                 response_content = result.content
                 st.write(response_content)
-                # with get_openai_callback() as cb:
-                #     st.session_state.chat_history = result['chat_history']
-                # response = result['answer']
-                # source_documents = result['source_documents']
-              #  st.markdown(result)
-
-                # st.markdown(response)
-                # with st.expander("참고 문서 확인"):
-                #     st.markdown(source_documents[0].metadata['source'], help = source_documents[0].page_content)
-                #     st.markdown(source_documents[1].metadata['source'], help = source_documents[1].page_content)
-                #     st.markdown(source_documents[2].metadata['source'], help = source_documents[2].page_content)
 
         # AI 채팅 기록 남기기
         st.session_state.messages.append({"role": "assistant", "content": result.content})
