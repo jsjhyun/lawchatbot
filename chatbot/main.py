@@ -19,7 +19,6 @@ def main():
 
 
     with st.sidebar:      
-        #uploaded_files =  st.file_uploader("파일을 올려주세요.",type=['pdf','docx'],accept_multiple_files=True)
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         process = st.button("Process")
         "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)" 
@@ -41,15 +40,10 @@ def main():
             "📖 챗봇을 통해 즉각적이고 정확한 답변을 얻을 수 있습니다."
         )
 
-        # if "processComplete" not in st.session_state:
-        #     st.session_state.processComplete = None
-            
     if process:
         if not openai_api_key:
             st.info("OpenAI API key를 넣어주세요.")
             st.stop()
-        #Retriever()
-#            st.session_state.processComplete = True 
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = [{"role": "assistant", "content": "안녕하세요! 법률 고민이 있으면 언제든 물어봐주세요!"}]
@@ -69,21 +63,12 @@ def main():
             st.info("OpenAI API key 를 입력하세요.")
             st.stop()
     
-#       client = OpenAI(api_key=openai_api_key)
-
         category=get_retriever_category(user_input,openai_api_key)
         st.session_state.conversation = get_conversation_chain(Retriever.retrievers[category],openai_api_key) 
         
-
-        # 내 채팅 기록 남기기
-
         st.session_state.messages.append({"role": "user", "content": user_input})
         
         st.chat_message("user").write(user_input)
-        #       response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
-        # msg = response.choices[0].message.content
-        # st.session_state.messages.append({"role": "assistant", "content": msg})
-        # st.chat_message("assistant").write(msg)
 
         with st.chat_message("assistant"):
             chain = st.session_state.conversation
@@ -91,19 +76,12 @@ def main():
             with st.spinner("Thinking..."):
 
                 result = chain.invoke(user_input).content
-                #with get_openai_callback() as cb:
-
                 result = chain.invoke(user_input)
                 response_content = result.content
                 st.write(response_content)
-                # with get_openai_callback() as cb:
-
-                    #st.session_state.chat_history = result['chat_history']
-                #response = result['answer']                
+           
         # AI 채팅 기록 남기기
         st.session_state.messages.append({"role": "assistant", "content": result.content})
-
-
 
 if __name__ == '__main__':
     main()
